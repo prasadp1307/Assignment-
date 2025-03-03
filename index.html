@@ -1,54 +1,51 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Form</title>
-    <link rel="stylesheet" href="styles.css">
-    <script>
-        function displayResult(event) {
-            event.preventDefault(); // Prevent form submission reload
-            let firstName = document.getElementById("firstName").value;
-            let lastName = document.getElementById("lastName").value;
-
-            if (firstName.trim() === "" || lastName.trim() === "") {
-                document.getElementById("result").innerText = "Please enter both names!";
-                document.getElementById("result").style.color = "red";
-            } else {
-                document.getElementById("result").innerText = "Hello, " + firstName + " " + lastName + "!";
-                document.getElementById("result").style.color = "green";
-            }
-        }
-
-        function resetForm() {
-            document.getElementById("userForm").reset();
-            document.getElementById("result").innerText = "";
-        }
-    </script>
+    <title>Add Numbers</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <h1>Add Numbers</h1>
+    <form>
+        <label for="num1">Number 1:</label>
+        <input type="number" id="num1" required><br><br>
+        <label for="num2">Number 2:</label>
+        <input type="number" id="num2" required><br><br>
+        <button id="add-btn">Add</button>
+    </form>
+    <p id="result"></p>
+    <p id="error"></p>
 
-    <div class="container">
-        <h2>Enter Your Name</h2>
-        <form id="userForm" onsubmit="displayResult(event)">
-            <div class="input-group">
-                <label for="firstName">First Name:</label>
-                <input type="text" id="firstName" placeholder="Enter First Name">
-            </div>
-            
-            <div class="input-group">
-                <label for="lastName">Last Name:</label>
-                <input type="text" id="lastName" placeholder="Enter Last Name">
-            </div>
+    <script>
+        const addBtn = document.getElementById('add-btn');
+        const num1Input = document.getElementById('num1');
+        const num2Input = document.getElementById('num2');
+        const resultPara = document.getElementById('result');
+        const errorPara = document.getElementById('error');
 
-            <div class="button-group">
-                <button type="submit">Submit</button>
-                <button type="button" onclick="resetForm()">Reset</button>
-            </div>
-        </form>
+        addBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            try {
+                const num1 = parseFloat(num1Input.value);
+                const num2 = parseFloat(num2Input.value);
+                const result = await addNumbers(num1, num2);
+                resultPara.textContent = `Result: ${result}`;
+                errorPara.textContent = '';
+            } catch (error) {
+                errorPara.textContent = `Error: ${error.message}`;
+                resultPara.textContent = '';
+            }
+        });
 
-        <p id="result"></p>
-    </div>
-
+        async function addNumbers(num1, num2) {
+            if (typeof num1 !== 'number' || typeof num2 !== 'number') {
+                throw new Error('Both arguments must be numbers');
+            }
+            return Promise.resolve(num1 + num2);
+        }
+    </script>
 </body>
 </html>
