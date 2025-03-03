@@ -1,44 +1,51 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Calculator</title>
-    <link rel="stylesheet" href="styles.css">
-
-    <script>
-        function addNumbers() {
-            let num1 = parseFloat(document.getElementById("num1").value);
-            let num2 = parseFloat(document.getElementById("num2").value);
-
-            if (isNaN(num1) || isNaN(num2)) {
-                document.getElementById("result").innerText = "Please enter valid numbers!";
-                return;
-            }
-
-            let sum = num1 + num2;
-            document.getElementById("result").innerText = "Result: " + sum;
-        }
-
-        function resetFields() {
-            document.getElementById("num1").value = "";
-            document.getElementById("num2").value = "";
-            document.getElementById("result").innerText = "";
-        }
-    </script>
-
+    <title>Add Numbers</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h2>Simple Calculator</h2>
-        <input type="number" id="num1" placeholder="Enter first number">
-        <input type="number" id="num2" placeholder="Enter second number">
-        <button onclick="addNumbers()">Add</button>
-        <br>
-        <br>
-      
-        <button onclick="resetFields()" class="reset-btn">Reset</button>
-        <p id="result"></p>
-    </div>
+    <h1>Add Numbers</h1>
+    <form>
+        <label for="num1">Number 1:</label>
+        <input type="number" id="num1" required><br><br>
+        <label for="num2">Number 2:</label>
+        <input type="number" id="num2" required><br><br>
+        <button id="add-btn">Add</button>
+    </form>
+    <p id="result"></p>
+    <p id="error"></p>
+
+    <script>
+        const addBtn = document.getElementById('add-btn');
+        const num1Input = document.getElementById('num1');
+        const num2Input = document.getElementById('num2');
+        const resultPara = document.getElementById('result');
+        const errorPara = document.getElementById('error');
+
+        addBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            try {
+                const num1 = parseFloat(num1Input.value);
+                const num2 = parseFloat(num2Input.value);
+                const result = await addNumbers(num1, num2);
+                resultPara.textContent = `Result: ${result}`;
+                errorPara.textContent = '';
+            } catch (error) {
+                errorPara.textContent = `Error: ${error.message}`;
+                resultPara.textContent = '';
+            }
+        });
+
+        async function addNumbers(num1, num2) {
+            if (typeof num1 !== 'number' || typeof num2 !== 'number') {
+                throw new Error('Both arguments must be numbers');
+            }
+            return Promise.resolve(num1 + num2);
+        }
+    </script>
 </body>
 </html>
