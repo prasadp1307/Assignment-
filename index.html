@@ -3,16 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Hover Effect</title>
+    <title>User Form</title>
     <link rel="stylesheet" href="styles.css">
+    <script>
+        function displayResult(event) {
+            event.preventDefault(); // Prevent form submission reload
+            let firstName = document.getElementById("firstName").value;
+            let lastName = document.getElementById("lastName").value;
+
+            if (firstName.trim() === "" || lastName.trim() === "") {
+                document.getElementById("result").innerText = "Please enter both names!";
+                document.getElementById("result").style.color = "red";
+            } else {
+                document.getElementById("result").innerText = "Hello, " + firstName + " " + lastName + "!";
+                document.getElementById("result").style.color = "green";
+            }
+        }
+
+        function resetForm() {
+            document.getElementById("userForm").reset();
+            document.getElementById("result").innerText = "";
+        }
+    </script>
 </head>
 <body>
 
     <div class="container">
-        <h2>Hover Over the Image</h2>
-        <div class="image-wrapper">
-            <img src="https://www.thegrandindianroute.com/wp-content/uploads/2024/02/Untitled-design-2024-07-17T005119.143.jpg" alt="Sample Image" class="image">
-        </div>
+        <h2>Enter Your Name</h2>
+        <form id="userForm" onsubmit="displayResult(event)">
+            <div class="input-group">
+                <label for="firstName">First Name:</label>
+                <input type="text" id="firstName" placeholder="Enter First Name">
+            </div>
+            
+            <div class="input-group">
+                <label for="lastName">Last Name:</label>
+                <input type="text" id="lastName" placeholder="Enter Last Name">
+            </div>
+
+            <div class="button-group">
+                <button type="submit">Submit</button>
+                <button type="button" onclick="resetForm()">Reset</button>
+            </div>
+        </form>
+
+        <p id="result"></p>
     </div>
 
 </body>
